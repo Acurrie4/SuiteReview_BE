@@ -12,6 +12,18 @@ app.use(cors({
   origin: 'http://localhost:3000' 
 }));
 
+app.get('/api/hotels', (req, res) => {
+  // Fetch hotels from database and send as JSON
+});
+
+app.post('/api/hotels', (req, res) => {
+  // Add a new hotel to the database
+});
+
+app.get('/api/data', (req, res) => {
+  res.json({ message: "This is data from the backend." });
+});
+
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
