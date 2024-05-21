@@ -1,3 +1,5 @@
+const express = require('express');
+const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -8,9 +10,19 @@ const generateToken = (id) => {
     expiresIn: '30d',
   });
 };
+//Delete token routes 
+// GET all users
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error: error });
+  }
+});
 
 // Sign up
-exports.signUp = async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.create({ username, password });
@@ -20,14 +32,14 @@ exports.signUp = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+});
 
 // Log in
-exports.logIn = async (req, res) => {
+router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
-    if (user && (await user.correctPassword(password, user.password))) {
+    if (user && await bcrypt.compare(password, user.password)) {
       res.json({
         token: generateToken(user._id),
       });
@@ -37,4 +49,6 @@ exports.logIn = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+});
+
+module.exports = router;
