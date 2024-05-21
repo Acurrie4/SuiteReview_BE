@@ -1,6 +1,6 @@
 const seedDataUsers = [
     {
-        userName: 'janedoe84',
+        username: 'janedoe84',
         firstName: 'Jane',
         lastName: 'Doe',
         userImage: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/777.png',
@@ -9,7 +9,7 @@ const seedDataUsers = [
         user_Id: 100
     },
     {
-        userName: 'mike_smith',
+        username: 'mike_smith',
         firstName: 'Mike',
         lastName: 'Smith',
         userImage: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/007.png',
@@ -18,7 +18,7 @@ const seedDataUsers = [
         user_Id: 101
     },
     {
-        userName: 'sara_jones',
+        username: 'sara_jones',
         firstName: 'Sara',
         lastName: 'Jones',
         userImage: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/311.png',
@@ -27,7 +27,7 @@ const seedDataUsers = [
         user_Id: 102
     },
     {
-        userName: 'alex_wilson',
+        username: 'alex_wilson',
         firstName: 'Alex',
         lastName: 'Wilson',
         userImage: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/702.png',
@@ -36,7 +36,7 @@ const seedDataUsers = [
         user_Id: 103
     },
     {
-        userName: 'emily_brown',
+        username: 'emily_brown',
         firstName: 'Emily',
         lastName: 'Brown',
         userImage: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/429.png',
@@ -46,4 +46,4 @@ const seedDataUsers = [
     }
 ]
 
-module.exports  = seedDataUsers
+module.exports  = seedDataUsers;
