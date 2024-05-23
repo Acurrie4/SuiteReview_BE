@@ -31,7 +31,7 @@ router.get('/:user_Id', async (req, res) => {
 // Sign up
 // POST create a new user
 router.post('/new', async (req, res) => {
-  const { userName, email, password } = req.body;
+  const { userName, password } = req.body;
   try {
     // Check if user already exists
     const existingUser = await User.findOne({ userName });
