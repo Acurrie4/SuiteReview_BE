@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema({
-  hotel_Id: { type: String, required: true },
+  hotel_Id: { type: Number, required: true },
   description: { type: String, required: true },
   rating: { type: Number, required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  user_Id: { type: Number, required: true },
   images: [String]
 });
 
