@@ -22,24 +22,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a single hotel by ID with average rating
-router.get('/:id', async (req, res) => {
-  try {
-    const hotel = await Hotel.findById(req.params.id);
-    if (!hotel) {
-      return res.status(404).json({ message: 'Hotel not found' });
-    }
-    const reviews = await Review.find({ hotel_Id: hotel.hotel_Id });
-    const averageRating = reviews.length > 0
-      ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(2)
-      : 'No ratings yet';
-    res.status(200).json({ ...hotel.toObject(), averageRating });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-});
-
-// Add Hotel seed
 router.get('/newHotel', async (req, res) => {
     const hotels = await Hotel.create ([
         {
@@ -172,6 +154,24 @@ router.get('/newHotel', async (req, res) => {
             ],
             hotel_Id: 9
         }
-    ])
+    ]);
+    res.redirect('/hotels')
 })
+// GET a single hotel by ID with average rating
+router.get('/:id', async (req, res) => {
+  try {
+    const hotel = await Hotel.findById(req.params.id);
+    if (!hotel) {
+      return res.status(404).json({ message: 'Hotel not found' });
+    }
+    const reviews = await Review.find({ hotel_Id: hotel.hotel_Id });
+    const averageRating = reviews.length > 0
+      ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(2)
+      : 'No ratings yet';
+    res.status(200).json({ ...hotel.toObject(), averageRating });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 module.exports = router;
