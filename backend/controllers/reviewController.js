@@ -5,7 +5,7 @@ const Review = require('../models/Review');
 // GET all reviews
 router.get('/', async (req, res) => {
   try {
-    const reviews = await Review.find().populate('user_Id', 'userName');
+    const reviews = await Review.find();
     res.status(200).json(reviews);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 // GET reviews for a particular hotel by hotel_Id
 router.get('/:hotel_Id', async (req, res) => {
   try {
-    const reviews = await Review.find({ hotel_Id: req.params.hotel_Id }).populate('user_Id', 'userName');
+    const reviews = await Review.find({ hotel_Id: req.params.hotel_Id });
     res.status(200).json(reviews);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -24,7 +24,7 @@ router.get('/:hotel_Id', async (req, res) => {
 // GET reviews for a particular user by user_Id
 router.get('/user/:user_Id', async (req, res) => {
   try {
-    const reviews = await Review.find({ user: req.params.user_Id }).populate('user_Id', 'userName');
+    const reviews = await Review.find({ user_Id: req.params.user_Id });
     res.status(200).json(reviews);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -34,7 +34,7 @@ router.get('/user/:user_Id', async (req, res) => {
 // GET a single review by ID
 router.get('/review/:id', async (req, res) => {
   try {
-    const review = await Review.findById(req.params.id).populate('user_Id', 'userName');
+    const review = await Review.findById(req.params.id);
     if (!review) {
       return res.status(404).json({ message: 'Review not found' });
     }
@@ -50,9 +50,9 @@ router.post('/:hotel_Id', async (req, res) => {
   try {
     const review = await Review.create({
       hotel_Id: req.params.hotel_Id,
-      description,
-      rating,
-      user_Id: req.user.id
+      description: req.body.description,
+      rating: req.body.rating,
+      user_Id: req.body.user_Id
     });
     res.status(201).json(review);
   } catch (error) {
@@ -62,12 +62,13 @@ router.post('/:hotel_Id', async (req, res) => {
 
 // PUT update a review by ID
 router.put('/:id', async (req, res) => {
-  const { description, rating } = req.body;
+  const { hotel_Id, description, rating } = req.body;
   try {
     const review = await Review.findById(req.params.id);
     if (!review) {
       return res.status(404).json({ message: 'Review not found' });
     }
+    review.hotel_Id = hotel_Id;
     review.description = description;
     review.rating = rating;
     await review.save();
@@ -80,11 +81,10 @@ router.put('/:id', async (req, res) => {
 // DELETE a review by ID
 router.delete('/:id', async (req, res) => {
   try {
-    const review = await Review.findById(req.params.id);
+    const review = await Review.findByIdAndDelete(req.params.id);
     if (!review) {
       return res.status(404).json({ message: 'Review not found' });
     }
-    await review.remove();
     res.status(200).json({ message: 'Review deleted' });
   } catch (error) {
     res.status(400).json({ message: error.message });

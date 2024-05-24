@@ -17,8 +17,8 @@ router.get('/', async (req, res) => {
 // GET user profile by user ID
 router.get('/:user_Id', async (req, res) => {
   try {
-    const userId = mongoose.Types.ObjectId(req.params.user_Id); // Convert to ObjectId
-    const user = await User.findById(userId);
+    const userId = (req.params.user_Id);
+    const user = await User.findById(user_Id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -78,9 +78,22 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.delete('/deleteUsers', async (req, res) => {
+  try {
+    const user = await User.deleteMany({});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User deleted' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 // Add seed data
 router.get('/newUser', async (req, res) => {
-  const Users = await User.create([
+  try {
+    const Users = await User.create([
     {
       userName: 'janedoe84',
       firstName: 'Jane',
@@ -126,7 +139,9 @@ router.get('/newUser', async (req, res) => {
       password: 'securePassword567',
       user_Id: 104
   }
-  ])
+  ])} catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 })
 
 module.exports = router;

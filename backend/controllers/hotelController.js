@@ -4,12 +4,12 @@ const Hotel = require('../models/Hotel');
 const Review = require('../models/Review');
 
 // GET all hotels with average rating
-router.get('/hotel', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const hotels = await Hotel.find();
     const hotelsWithRatings = await Promise.all(
       hotels.map(async (hotel) => {
-        const reviews = await Review.find({ hotel_Id: hotel._id });
+        const reviews = await Review.find({ hotel_Id: hotel.hotel_Id });
         const averageRating = reviews.length > 0
           ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(2)
           : 'No ratings yet';
@@ -23,13 +23,13 @@ router.get('/hotel', async (req, res) => {
 });
 
 // GET a single hotel by ID with average rating
-router.get('/hotel/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const hotel = await Hotel.findById(req.params.id);
     if (!hotel) {
       return res.status(404).json({ message: 'Hotel not found' });
     }
-    const reviews = await Review.find({ hotel_Id: hotel._id });
+    const reviews = await Review.find({ hotel_Id: hotel.hotel_Id });
     const averageRating = reviews.length > 0
       ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(2)
       : 'No ratings yet';
